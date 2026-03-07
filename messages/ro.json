@@ -1,0 +1,79 @@
+{
+  "nav": {
+    "home": "Acasă",
+    "about": "Despre",
+    "portfolio": "Portofoliu",
+    "contact": "Contact"
+  },
+  "hero": {
+    "greeting": "Salut, sunt",
+    "name": "marikoryx",
+    "title": "Dezvoltator Full Stack",
+    "subtitle": "Creând experiențe digitale cu tehnologii moderne",
+    "cta": "Vezi proiectele",
+    "ctaContact": "Contactează-mă",
+    "scroll": "Derulează pentru a explora"
+  },
+  "about": {
+    "title": "Despre mine",
+    "subtitle": "Pasionat de construirea unor experiențe digitale excepționale",
+    "description": "Sunt un dezvoltator full-stack cu o pasiune pentru crearea de aplicații web elegante și performante. Cu expertiză în framework-uri JavaScript moderne și un ochi atent pentru design, aduc ideile la viață prin cod.",
+    "years": "Ani experiență",
+    "projects": "Proiecte finalizate",
+    "clients": "Clienți mulțumiți"
+  },
+  "skills": {
+    "title": "Competențe și tehnologii",
+    "subtitle": "Instrumente cu care lucrez zilnic",
+    "frontend": "Frontend",
+    "backend": "Backend",
+    "tools": "Instrumente"
+  },
+  "projects": {
+    "title": "Proiecte selectate",
+    "subtitle": "O selecție din lucrările mele recente",
+    "viewAll": "Toate proiectele",
+    "viewProject": "Vezi proiectul",
+    "live": "Live",
+    "code": "Cod",
+    "technologies": "Tehnologii",
+    "backToPortfolio": "Înapoi la portofoliu",
+    "noProjects": "Nu există proiecte încă."
+  },
+  "experience": {
+    "title": "Experiență",
+    "subtitle": "Călătoria mea profesională",
+    "present": "Prezent",
+    "items": {
+      "0": {
+        "year": "2024",
+        "title": "PHP Web Developer",
+        "company": "Web Master",
+        "description": "Dezvoltare web cu PHP, lucruri la proiecte pentru clienți.",
+        "present": false
+      },
+      "1": {
+        "year": "2026",
+        "title": "Dezvoltator Freelance",
+        "company": "Freelance",
+        "description": "Lucru independent la proiecte web, dezvoltare full-stack, colaborare directă cu clienții.",
+        "present": true
+      }
+    }
+  },
+  "contact": {
+    "title": "Contactează-mă",
+    "subtitle": "Hai să construim ceva uimitor împreună",
+    "name": "Numele tău",
+    "email": "Email-ul tău",
+    "message": "Mesajul tău",
+    "send": "Trimite mesaj",
+    "sending": "Se trimite...",
+    "success": "Mesaj trimis cu succes!",
+    "error": "Ceva nu a mers bine. Te rugăm să încerci din nou."
+  },
+  "footer": {
+    "rights": "marikoryx. Toate drepturile rezervate.",
+    "built": "Construit cu Next.js"
+  }
+}
