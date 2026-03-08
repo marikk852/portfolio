@@ -86,7 +86,8 @@ Protected admin area at `/admin` for managing portfolio projects.
    cp .env.example .env
    ```
 
-2. Set `DATABASE_URL` for PostgreSQL and `NEXTAUTH_SECRET` (min 32 chars).
+2. Set `DATABASE_URL`, `DIRECT_DATABASE_URL` (PostgreSQL) and `NEXTAUTH_SECRET` (min 32 chars).
+   For local dev: use [Neon](https://neon.tech) free tier or local Postgres.
 
 3. Push schema and seed admin user:
    ```bash
@@ -111,3 +112,9 @@ Protected admin area at `/admin` for managing portfolio projects.
 - images (array of URLs)
 - videoUrl, githubUrl, liveUrl
 - featured (boolean)
+
+## Deployment (Vercel)
+
+See [DEPLOY.md](./DEPLOY.md) for full guide. Summary:
+- PostgreSQL required (Vercel Postgres, Neon, or Supabase)
+- Set `DATABASE_URL`, `DIRECT_DATABASE_URL`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`
