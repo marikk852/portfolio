@@ -8,7 +8,7 @@
 # Скопируйте .env.example в .env
 cp .env.example .env
 
-# Заполните DATABASE_URL и DIRECT_DATABASE_URL (Neon free tier или локальный Postgres)
+# Заполните DATABASE_URL (Neon free tier или локальный Postgres)
 # Затем:
 npm run db:push
 npm run db:seed
@@ -28,22 +28,19 @@ npm run dev
 3. Подключите БД к проекту
 4. Vercel создаст переменные `POSTGRES_PRISMA_URL` и `POSTGRES_URL_NON_POOLING`
 5. Добавьте в **Settings → Environment Variables**:
-   - `DATABASE_URL` = значение из `POSTGRES_PRISMA_URL`
-   - `DIRECT_DATABASE_URL` = значение из `POSTGRES_URL_NON_POOLING`
+   - `DATABASE_URL` = значение из `POSTGRES_URL_NON_POOLING` (для миграций) или `POSTGRES_PRISMA_URL`
 
 ### Вариант B: Neon (бесплатный tier)
 
 1. Создайте БД на [neon.tech](https://neon.tech)
-2. Скопируйте connection string (pooled и direct)
-3. В Vercel добавьте:
-   - `DATABASE_URL` = pooled URL (с `?sslmode=require`)
-   - `DIRECT_DATABASE_URL` = direct URL (без pgbouncer)
+2. Скопируйте connection string (рекомендуется direct, без pgbouncer — для миграций)
+3. В Vercel добавьте `DATABASE_URL`
 
 ### Вариант C: Supabase
 
 1. Создайте проект на [supabase.com](https://supabase.com)
-2. **Settings → Database** → Connection string (Transaction mode и Session mode)
-3. В Vercel добавьте оба URL
+2. **Settings → Database** → Connection string
+3. В Vercel добавьте `DATABASE_URL`
 
 ---
 
@@ -52,7 +49,6 @@ npm run dev
 | Переменная | Обязательно | Описание |
 |------------|-------------|----------|
 | `DATABASE_URL` | ✅ | PostgreSQL connection string |
-| `DIRECT_DATABASE_URL` | ✅ | Прямой URL для миграций |
 | `NEXTAUTH_SECRET` | ✅ | Случайная строка (32+ символов) |
 | `NEXTAUTH_URL` | ✅ | `https://ваш-домен.vercel.app` |
 | `ADMIN_EMAIL` | — | Email админа (для seed) |

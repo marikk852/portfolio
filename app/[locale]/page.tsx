@@ -22,7 +22,6 @@ export default async function HomePage({
       <AboutSection />
       <SectionDivider variant="line" />
       <SkillsSection />
-      <SectionDivider variant="wave" />
       <FeaturedProjectsSection projects={featuredProjects} />
       <SectionDivider variant="gradient" />
       <ExperienceSection />
