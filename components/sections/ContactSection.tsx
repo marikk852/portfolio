@@ -76,15 +76,17 @@ export function ContactSection() {
                   onChange={(e) => setFormData((p) => ({ ...p, message: e.target.value }))}
                 />
               </div>
-              <LiquidGlassButton
-                type="submit"
-                variant="sunset"
-                size="lg"
-                className="w-full md:w-auto"
-                disabled={status === 'loading'}
-              >
-                {status === 'loading' ? t('sending') : t('send')}
-              </LiquidGlassButton>
+              <div className="flex justify-center">
+                <LiquidGlassButton
+                  type="submit"
+                  variant="sunset"
+                  size="lg"
+                  className="w-full md:w-auto"
+                  disabled={status === 'loading'}
+                >
+                  {status === 'loading' ? t('sending') : t('send')}
+                </LiquidGlassButton>
+              </div>
               {status === 'success' && (
                 <p className="text-sm text-green-500">{t('success')}</p>
               )}

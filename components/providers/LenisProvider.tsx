@@ -1,13 +1,16 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useRef, useEffect, type ReactNode } from 'react';
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { LenisContext } from '@/contexts/LenisContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export function LenisProvider({ children }: { children: React.ReactNode }) {
+export function LenisProvider({ children }: { children: ReactNode }) {
+  const lenisRef = useRef<Lenis | null>(null);
+
   useEffect(() => {
     const isMobile = window.innerWidth < 768;
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -23,6 +26,7 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
       smoothWheel: true,
     });
 
+    lenisRef.current = lenis;
     lenis.on('scroll', ScrollTrigger.update);
 
     const raf = (time: number) => lenis.raf(time * 1000);
@@ -34,9 +38,14 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
     return () => {
       gsap.ticker.remove(raf);
       lenis.destroy();
+      lenisRef.current = null;
       document.documentElement.classList.remove('lenis', 'lenis-smooth');
     };
   }, []);
 
-  return <>{children}</>;
+  return (
+    <LenisContext.Provider value={lenisRef}>
+      {children}
+    </LenisContext.Provider>
+  );
 }

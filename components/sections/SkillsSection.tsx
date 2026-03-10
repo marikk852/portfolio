@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { ScrollFadeSection } from '@/components/animations/ScrollFadeSection';
-import { motion } from 'framer-motion';
+import { JellyCard } from '@/components/ui/JellyCard';
 
 const skillCategories = [
   {
@@ -12,6 +12,16 @@ const skillCategories = [
   {
     key: 'backend',
     skills: ['Node.js', 'PostgreSQL', 'Prisma', 'REST API', 'GraphQL'],
+  },
+  {
+    key: 'ai',
+    skills: [
+      'AI Integration',
+      'Virtual AI Office',
+      'AI Agents for Business',
+      'LLM & RAG',
+      'Automation',
+    ],
   },
   {
     key: 'tools',
@@ -43,10 +53,11 @@ export function SkillsSection() {
           stagger={0.15}
           staggerTarget=".skill-card"
         >
-          <div className="grid gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-4">
             {skillCategories.map((category) => (
-              <motion.div
+              <JellyCard
                 key={category.key}
+                intensity={0.6}
                 className="skill-card cursor-hover rounded-xl border border-white/10 p-6 transition-all duration-300 md:p-8 md:hover:scale-[1.02] md:hover:border-white/20"
                 style={{
                   background:
@@ -70,7 +81,7 @@ export function SkillsSection() {
                     </span>
                   ))}
                 </div>
-              </motion.div>
+              </JellyCard>
             ))}
           </div>
         </ScrollFadeSection>

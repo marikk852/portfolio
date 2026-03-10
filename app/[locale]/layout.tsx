@@ -3,6 +3,7 @@ import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import { LenisProvider } from '@/components/providers/LenisProvider';
+import { ScrollVelocityProvider } from '@/contexts/ScrollVelocityContext';
 import { PageTransitionProvider } from '@/components/providers/PageTransitionProvider';
 import { HeroCursor } from '@/components/ui/HeroCursor';
 import { CinematicBackground } from '@/components/animations/CinematicBackground';
@@ -30,6 +31,7 @@ export default async function LocaleLayout({
   return (
     <NextIntlClientProvider messages={messages}>
       <LenisProvider>
+        <ScrollVelocityProvider>
         <CinematicBackground />
         <ScrollProgressGlow />
         <HeroCursor />
@@ -38,6 +40,7 @@ export default async function LocaleLayout({
           <PageTransitionProvider mode="auto">{children}</PageTransitionProvider>
         </main>
         <Footer />
+        </ScrollVelocityProvider>
       </LenisProvider>
     </NextIntlClientProvider>
   );

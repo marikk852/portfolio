@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
 import { ProjectScene } from '@/components/animations/ProjectScene';
+import { JellyCard } from '@/components/ui/JellyCard';
 import { ParticlesLayer } from '@/components/animations/ParticlesLayer';
 import { ScrollFadeSection } from '@/components/animations/ScrollFadeSection';
 import { LiquidGlassButton } from '@/components/ui/LiquidGlassButton';
@@ -60,8 +61,8 @@ export function FeaturedProjectsSection({ projects }: FeaturedProjectsSectionPro
             </p>
           ) : (
             projects.map((project, index) => (
+              <JellyCard key={project.id} intensity={0.7}>
               <ProjectScene
-                key={project.id}
                 href={getPath(project.slug)}
                 title={project.title}
                 description={project.description}
@@ -75,6 +76,7 @@ export function FeaturedProjectsSection({ projects }: FeaturedProjectsSectionPro
                 liveLabel={t('live')}
                 codeLabel={t('code')}
               />
+              </JellyCard>
             ))
           )}
         </div>
