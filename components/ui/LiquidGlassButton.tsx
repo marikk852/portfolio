@@ -75,9 +75,9 @@ export type LiquidGlassButtonProps =
   | LiquidGlassButtonButtonProps;
 
 const sizeClasses = {
-  sm: 'h-10 min-w-[120px] px-4 text-sm rounded-lg',
-  md: 'h-12 min-w-[160px] px-6 text-sm rounded-xl',
-  lg: 'h-14 min-w-[200px] px-8 text-base rounded-xl',
+  sm: 'h-10 min-h-[44px] min-w-[120px] px-4 text-sm rounded-lg touch-manipulation',
+  md: 'h-12 min-h-[48px] min-w-[160px] px-6 text-sm rounded-xl touch-manipulation',
+  lg: 'h-14 min-h-[52px] min-w-[200px] px-8 text-base rounded-xl touch-manipulation',
 };
 
 /**

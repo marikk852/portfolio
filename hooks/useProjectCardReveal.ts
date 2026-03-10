@@ -28,6 +28,9 @@ export function useProjectCardReveal<T extends HTMLElement>(
     const el = ref.current;
     if (!el) return;
 
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const effectiveStagger = isMobile ? stagger + 0.05 : stagger;
+
     const media = el.querySelector('[data-reveal-media]');
     const title = el.querySelector('[data-reveal-title]');
     const tech = el.querySelector('[data-reveal-tech]');
@@ -53,16 +56,18 @@ export function useProjectCardReveal<T extends HTMLElement>(
       },
     });
 
+    const mediaDuration = isMobile ? 0.4 : 0.6;
     if (media) {
       tl.fromTo(
         media,
         { opacity: 0, scale: 0.95 },
-        { opacity: 1, scale: 1, duration: 0.6, ease: 'power3.out' }
+        { opacity: 1, scale: 1, duration: mediaDuration, ease: 'power3.out' }
       );
     }
 
     if (title) {
       const chars = title.querySelectorAll('[data-reveal-char]');
+      const charStagger = isMobile ? 0.03 : 0.02;
       if (chars.length > 0) {
         tl.fromTo(
           chars,
@@ -70,11 +75,11 @@ export function useProjectCardReveal<T extends HTMLElement>(
           {
             opacity: 1,
             y: 0,
-            duration: 0.5,
-            stagger: 0.02,
+            duration: isMobile ? 0.35 : 0.5,
+            stagger: charStagger,
             ease: 'power3.out',
           },
-          stagger
+          effectiveStagger
         );
         tl.to(
           title,
@@ -88,8 +93,8 @@ export function useProjectCardReveal<T extends HTMLElement>(
         tl.fromTo(
           title,
           { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' },
-          stagger
+          { opacity: 1, y: 0, duration: isMobile ? 0.35 : 0.5, ease: 'power3.out' },
+          effectiveStagger
         );
       }
     }
@@ -102,11 +107,11 @@ export function useProjectCardReveal<T extends HTMLElement>(
         {
           opacity: 1,
           x: 0,
-          duration: 0.4,
-          stagger: items.length > 0 ? 0.05 : 0,
+          duration: isMobile ? 0.3 : 0.4,
+          stagger: items.length > 0 ? (isMobile ? 0.03 : 0.05) : 0,
           ease: 'power3.out',
         },
-        stagger + 0.2
+        effectiveStagger + 0.2
       );
     }
 
@@ -114,8 +119,8 @@ export function useProjectCardReveal<T extends HTMLElement>(
       tl.fromTo(
         cta,
         { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, duration: 0.4, ease: 'power3.out' },
-        stagger + 0.3
+        { opacity: 1, y: 0, duration: isMobile ? 0.3 : 0.4, ease: 'power3.out' },
+        effectiveStagger + 0.3
       );
     }
 

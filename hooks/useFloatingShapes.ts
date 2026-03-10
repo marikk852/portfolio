@@ -41,6 +41,9 @@ export function useFloatingShapes(containerRef: React.RefObject<HTMLElement | nu
     const shapes = container.querySelectorAll<HTMLElement>('[data-shape]');
     const animations: gsap.core.Tween[] = [];
 
+    const isMobile = window.innerWidth < 768;
+    const scrubVal = isMobile ? 0.5 : 1.5;
+
     shapes.forEach((el) => {
       const speed = parseFloat(el.dataset.speed || '0.08');
       const y = () => -(el.getBoundingClientRect().top * speed);
@@ -55,7 +58,7 @@ export function useFloatingShapes(containerRef: React.RefObject<HTMLElement | nu
             trigger: container,
             start: 'top bottom',
             end: 'bottom top',
-            scrub: 1.5,
+            scrub: scrubVal,
           },
         }
       );

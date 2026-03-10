@@ -3,6 +3,7 @@
 import { useRef, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 
+
 interface Particle {
   x: number;
   y: number;
@@ -71,11 +72,14 @@ export function ParticlesLayer({
 
   const initParticles = useCallback(
     (width: number, height: number): Particle[] => {
-      return Array.from({ length: count }, () => ({
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+      const n = isMobile ? Math.min(count, 15) : count;
+      const spd = isMobile ? speed * 0.7 : speed;
+      return Array.from({ length: n }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * speed,
-        vy: (Math.random() - 0.5) * speed,
+        vx: (Math.random() - 0.5) * spd,
+        vy: (Math.random() - 0.5) * spd,
         radius: size * (0.5 + Math.random() * 1.5),
         opacity: maxOpacity * (0.3 + Math.random() * 0.7),
         baseHue: hueMin + Math.random() * (hueMax - hueMin),
@@ -147,15 +151,18 @@ export function ParticlesLayer({
 
       const rect = container.getBoundingClientRect();
       mouseRef.current = { ...mousePendingRef.current };
-      const scrollOffset = (scrollRef.current - rect.top) * scrollInfluence;
+      const isMobile = window.innerWidth < 768;
+      const scrollInf = isMobile ? scrollInfluence * 0.5 : scrollInfluence;
+      const scrollOffset = (scrollRef.current - rect.top) * scrollInf;
       const mx = mouseRef.current.x * 50 * mouseInfluence;
       const my = mouseRef.current.y * 50 * mouseInfluence;
 
-      const phase = gradientSync
+      const gradSync = isMobile ? false : gradientSync;
+      const phase = gradSync
         ? ((performance.now() - startTimeRef.current) % gradientDuration) /
           gradientDuration
         : 0;
-      const hueOffset = gradientSync ? phase * hueShift : 0;
+      const hueOffset = gradSync ? phase * hueShift : 0;
 
       ctx.clearRect(0, 0, rect.width, rect.height);
 

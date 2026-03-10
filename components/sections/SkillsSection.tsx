@@ -43,11 +43,11 @@ export function SkillsSection() {
           stagger={0.15}
           staggerTarget=".skill-card"
         >
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3">
             {skillCategories.map((category) => (
               <motion.div
                 key={category.key}
-                className="skill-card cursor-hover rounded-xl border border-white/10 p-8 transition-all duration-300 hover:scale-[1.02] hover:border-white/20"
+                className="skill-card cursor-hover rounded-xl border border-white/10 p-6 transition-all duration-300 md:p-8 md:hover:scale-[1.02] md:hover:border-white/20"
                 style={{
                   background:
                     'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',

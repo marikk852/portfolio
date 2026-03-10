@@ -93,7 +93,7 @@ export function HeroScene({ videoSrc }: HeroSceneProps) {
   return (
     <section
       ref={containerRef}
-      className="relative flex min-h-dvh min-h-screen items-center justify-center overflow-hidden pt-20 md:pt-24"
+      className="relative flex min-h-dvh min-h-[100svh] min-h-screen items-center justify-center overflow-hidden pt-20 pb-20 md:pt-24 md:pb-0"
     >
       {/* Background */}
       <div className="absolute inset-0 bg-background" />
@@ -147,7 +147,7 @@ export function HeroScene({ videoSrc }: HeroSceneProps) {
           {t('greeting')} <span className="text-foreground">{t('name')}</span>
         </p>
 
-        <h1 className="mb-4 text-4xl font-bold tracking-tight sm:text-5xl md:text-7xl lg:text-8xl">
+        <h1 className="mb-4 text-3xl font-bold tracking-tight xs:text-4xl sm:text-5xl md:text-7xl lg:text-8xl">
           <span ref={titleRef} className="inline-block">
             {t('title')}
           </span>
@@ -160,12 +160,12 @@ export function HeroScene({ videoSrc }: HeroSceneProps) {
 
         <p
           ref={subtitleRef}
-          className="mx-auto mb-14 max-w-2xl text-base text-muted-foreground md:text-lg lg:text-xl"
+          className="mx-auto mb-10 max-w-2xl text-sm text-muted-foreground sm:mb-14 sm:text-base md:text-lg lg:text-xl"
         >
           {t('subtitle')}
         </p>
 
-        <div ref={ctasRef} className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <div ref={ctasRef} className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
           <LiquidGlassButton href="#projects" variant="primary">
             {t('cta')}
             <span className="ml-2 transition-transform group-hover:translate-x-1">→</span>
@@ -174,25 +174,26 @@ export function HeroScene({ videoSrc }: HeroSceneProps) {
             {t('ctaContact')}
           </LiquidGlassButton>
         </div>
-
-        <motion.div
-          ref={scrollRef}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 md:bottom-12"
-        >
-          <a
-            href="#about"
-            className="flex flex-col items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <span className="text-xs uppercase tracking-widest">{t('scroll')}</span>
-            <motion.div
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <ChevronDown className="h-6 w-6" />
-            </motion.div>
-          </a>
-        </motion.div>
       </div>
+
+      {/* Scroll hint — внизу секции */}
+      <motion.div
+        ref={scrollRef}
+        className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2 md:bottom-10"
+      >
+        <a
+          href="#about"
+          className="flex flex-col items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <span className="text-xs uppercase tracking-widest">{t('scroll')}</span>
+          <motion.div
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <ChevronDown className="h-6 w-6" />
+          </motion.div>
+        </a>
+      </motion.div>
     </section>
   );
 }

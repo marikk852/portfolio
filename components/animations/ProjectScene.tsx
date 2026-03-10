@@ -10,6 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 import { ExternalLink, Github } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useProjectCardReveal } from '@/hooks/useProjectCardReveal';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import { LiquidGlassButton } from '@/components/ui/LiquidGlassButton';
 
 export interface ProjectSceneProps {
@@ -54,6 +55,7 @@ export function ProjectScene({
 }: ProjectSceneProps) {
   const cardRef = useProjectCardReveal<HTMLElement>({ start: revealStart });
   const mediaRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
@@ -62,6 +64,7 @@ export function ProjectScene({
     const card = cardRef.current;
     if (!media || !card) return;
 
+    const scrubVal = typeof window !== 'undefined' && window.innerWidth < 768 ? 0.5 : 1.5;
     const anim = gsap.fromTo(
       media,
       { scale: 0.98 },
@@ -72,7 +75,7 @@ export function ProjectScene({
           trigger: card,
           start: 'top 90%',
           end: 'bottom 10%',
-          scrub: 1.5,
+          scrub: scrubVal,
         },
       }
     );
@@ -119,20 +122,21 @@ export function ProjectScene({
         'group cursor-hover relative overflow-hidden rounded-xl border border-white/10',
         className
       )}
-      style={{
-        perspective: 1000,
-        rotateX,
-        rotateY,
-        transformStyle: 'preserve-3d',
-      }}
+      style={
+        isMobile
+          ? undefined
+          : {
+              perspective: 1000,
+              rotateX,
+              rotateY,
+              transformStyle: 'preserve-3d',
+            }
+      }
       initial={false}
-      whileHover={{
-        scale: 1.03,
-        transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
-      }}
+      whileHover={isMobile ? undefined : { scale: 1.03, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } }}
       whileTap={{ scale: 0.99 }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+      onMouseMove={isMobile ? undefined : handleMouseMove}
+      onMouseLeave={isMobile ? undefined : handleMouseLeave}
     >
       <Link href={href} className="block">
         {/* Media layer */}

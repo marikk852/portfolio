@@ -1,3 +1,4 @@
+export { useIsMobile, usePrefersReducedMotion } from './useIsMobile';
 export { useTextReveal } from './useTextReveal';
 export { useScrollFade } from './useScrollFade';
 export { useParallax } from './useParallax';

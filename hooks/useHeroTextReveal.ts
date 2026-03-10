@@ -36,6 +36,11 @@ export function useHeroTextReveal<T extends HTMLElement>(
     const el = ref.current;
     if (!el) return;
 
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const effectiveY = isMobile ? Math.min(y, 20) : y;
+    const effectiveBlur = isMobile ? 2 : blur;
+    const effectiveStagger = isMobile ? Math.max(stagger, 0.015) : stagger;
+
     const text = (el.textContent || '').trim();
     if (!text) return;
 
@@ -56,9 +61,9 @@ export function useHeroTextReveal<T extends HTMLElement>(
       const inner = document.createElement('span');
       inner.style.display = 'inline-block';
       inner.textContent = char === ' ' ? '\u00A0' : char;
-      inner.style.transform = `translateY(${y}px)`;
+      inner.style.transform = `translateY(${effectiveY}px)`;
       inner.style.opacity = '0';
-      inner.style.filter = `blur(${blur}px)`;
+      inner.style.filter = `blur(${effectiveBlur}px)`;
       span.appendChild(inner);
       wrapper.appendChild(span);
       elements.push(inner);
@@ -71,8 +76,8 @@ export function useHeroTextReveal<T extends HTMLElement>(
       y: 0,
       opacity: 1,
       filter: 'blur(0px)',
-      duration,
-      stagger,
+      duration: isMobile ? duration * 0.8 : duration,
+      stagger: effectiveStagger,
       ease,
     });
 

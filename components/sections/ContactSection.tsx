@@ -37,7 +37,7 @@ export function ContactSection() {
   return (
     <section id="contact" className="py-24 md:py-32">
       <div className="container mx-auto px-6">
-        <ScrollFadeSection start="top 80%" duration={1} y={40} blur={4}>
+        <ScrollFadeSection start="top 85%" duration={0.9} y={30}>
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="mb-4 text-sm uppercase tracking-[0.3em] text-muted-foreground">
               {t('title')}
@@ -46,12 +46,12 @@ export function ContactSection() {
               {t('subtitle')}
             </h3>
 
-            <form onSubmit={handleSubmit} className="space-y-6 text-left">
+            <form onSubmit={handleSubmit} className="space-y-5 text-left">
               <div>
                 <Input
                   type="text"
                   placeholder={t('name')}
-                  className="h-12 border-border/50 bg-background"
+                  className="min-h-[48px] h-12 border-border/50 bg-background touch-manipulation"
                   required
                   value={formData.name}
                   onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))}
@@ -61,7 +61,7 @@ export function ContactSection() {
                 <Input
                   type="email"
                   placeholder={t('email')}
-                  className="h-12 border-border/50 bg-background"
+                  className="min-h-[48px] h-12 border-border/50 bg-background touch-manipulation"
                   required
                   value={formData.email}
                   onChange={(e) => setFormData((p) => ({ ...p, email: e.target.value }))}
@@ -70,7 +70,7 @@ export function ContactSection() {
               <div>
                 <Textarea
                   placeholder={t('message')}
-                  className="min-h-[120px] border-border/50 bg-background"
+                  className="min-h-[120px] py-3 border-border/50 bg-background touch-manipulation"
                   required
                   value={formData.message}
                   onChange={(e) => setFormData((p) => ({ ...p, message: e.target.value }))}

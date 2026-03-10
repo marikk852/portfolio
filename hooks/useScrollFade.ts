@@ -42,6 +42,10 @@ export function useScrollFade<T extends HTMLElement>(options: UseScrollFadeOptio
     const el = ref.current;
     if (!el) return;
 
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const effectiveY = isMobile ? Math.min(y, 24) : y;
+    const effectiveBlur = isMobile ? 0 : blur;
+
     const targets = staggerTarget ? el.querySelectorAll(staggerTarget) : [el];
     const scrollTriggerConfig = {
       trigger: el,
@@ -49,10 +53,10 @@ export function useScrollFade<T extends HTMLElement>(options: UseScrollFadeOptio
       toggleActions: once ? 'play none none none' : 'play none none reverse',
     };
 
-    const fromVars = { opacity: 0, y };
+    const fromVars = { opacity: 0, y: effectiveY };
     const toVars = { opacity: 1, y: 0 };
-    if (blur > 0) {
-      Object.assign(fromVars, { filter: `blur(${blur}px)` });
+    if (effectiveBlur > 0) {
+      Object.assign(fromVars, { filter: `blur(${effectiveBlur}px)` });
       Object.assign(toVars, { filter: 'blur(0px)' });
     }
 
