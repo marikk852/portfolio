@@ -19,6 +19,7 @@ const skillCategories = [
       'AI Integration',
       'Virtual AI Office',
       'AI Agents for Business',
+      'AI Agent Pipelines',
       'LLM & RAG',
       'Automation',
     ],
