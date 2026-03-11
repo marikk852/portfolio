@@ -1,7 +1,8 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
@@ -12,6 +13,11 @@ import { cn } from '@/lib/utils';
 import { useProjectCardReveal } from '@/hooks/useProjectCardReveal';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { LiquidGlassButton } from '@/components/ui/LiquidGlassButton';
+
+const ProjectCard3DPreview = dynamic(
+  () => import('@/components/animations/ProjectCard3DPreview').then((m) => ({ default: m.ProjectCard3DPreview })),
+  { ssr: false }
+);
 
 export interface ProjectSceneProps {
   href: string;
@@ -56,6 +62,7 @@ export function ProjectScene({
   const cardRef = useProjectCardReveal<HTMLElement>({ start: revealStart });
   const mediaRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+  const [isHovered, setIsHovered] = useState(false);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
@@ -136,7 +143,8 @@ export function ProjectScene({
       whileHover={isMobile ? undefined : { scale: 1.03, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } }}
       whileTap={{ scale: 0.99 }}
       onMouseMove={isMobile ? undefined : handleMouseMove}
-      onMouseLeave={isMobile ? undefined : handleMouseLeave}
+      onMouseLeave={isMobile ? undefined : () => { handleMouseLeave(); setIsHovered(false); }}
+      onMouseEnter={isMobile ? undefined : () => setIsHovered(true)}
     >
       <Link href={href} className="block">
         {/* Media layer */}
@@ -146,7 +154,15 @@ export function ProjectScene({
           className="relative aspect-video w-full overflow-hidden bg-muted/30"
         >
           {mediaUrl ? (
-            mediaUrl.match(/\.(mp4|webm|ogg)$/i) ? (
+            <>
+              {!isMobile && (
+                <ProjectCard3DPreview
+                  accentHue={accentHue}
+                  isHovered={isHovered}
+                  variant="overlay"
+                />
+              )}
+              {mediaUrl.match(/\.(mp4|webm|ogg)$/i) ? (
               <video
                 src={mediaUrl}
                 className="h-full w-full object-cover"
@@ -162,11 +178,18 @@ export function ProjectScene({
                 alt=""
                 className="h-full w-full object-cover"
               />
-            )
+            )}
+            </>
           ) : (
-            <div className="flex h-full w-full items-center justify-center text-muted-foreground/40">
-              <span className="text-4xl font-light">{title.charAt(0)}</span>
-            </div>
+            <>
+              {!isMobile ? (
+                <ProjectCard3DPreview accentHue={accentHue} isHovered={isHovered} variant="full" />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center text-muted-foreground/40">
+                  <span className="text-4xl font-light">{title.charAt(0)}</span>
+                </div>
+              )}
+            </>
           )}
 
           {/* Color Liquid Glass overlay */}
