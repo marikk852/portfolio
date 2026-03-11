@@ -14,8 +14,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const botToken = process.env.TELEGRAM_BOT_TOKEN;
-    const chatId = process.env.TELEGRAM_CHAT_ID;
+    const botToken = process.env.TELEGRAM_BOT_TOKEN?.trim();
+    const chatId = process.env.TELEGRAM_CHAT_ID?.trim();
 
     if (!botToken || !chatId) {
       console.error("[Contact] TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID not set");
