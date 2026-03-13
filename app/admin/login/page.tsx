@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, Suspense, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { LiquidGlassButton } from "@/components/ui/LiquidGlassButton";
@@ -15,28 +15,26 @@ function LoginForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    const err = searchParams.get("error");
+    if (err === "CredentialsSignin") {
+      setError("Неверный email или пароль");
+    }
+  }, [searchParams]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
-    const result = await signIn("credentials", {
+    await signIn("credentials", {
       email,
       password,
-      redirect: false,
+      redirect: true,
       callbackUrl,
     });
 
     setLoading(false);
-
-    if (result?.error) {
-      setError(result.error === "CredentialsSignin" ? "Неверный email или пароль" : String(result.error));
-      return;
-    }
-
-    // Full page redirect — session cookie успевает установиться
-    const url = result?.url || callbackUrl;
-    window.location.href = url;
   };
 
   return (
