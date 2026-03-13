@@ -2,13 +2,12 @@
 
 import { useState, Suspense } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { LiquidGlassButton } from "@/components/ui/LiquidGlassButton";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/admin";
   const [email, setEmail] = useState("");
@@ -35,12 +34,9 @@ function LoginForm() {
       return;
     }
 
-    if (result?.url) {
-      router.push(result.url);
-    } else {
-      router.push(callbackUrl);
-    }
-    router.refresh();
+    // Full page redirect — session cookie успевает установиться
+    const url = result?.url || callbackUrl;
+    window.location.href = url;
   };
 
   return (
