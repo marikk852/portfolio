@@ -43,7 +43,18 @@ npx prisma db push
 npm run db:seed
 ```
 
-## 3. Вход в админку
+## 3. Загрузка файлов на Vercel
+
+Для загрузки фото/видео с устройства на Vercel:
+
+1. В проекте Vercel → **Storage** → **Create Database** → **Blob**
+2. Создайте store (публичный доступ для медиа)
+3. `BLOB_READ_WRITE_TOKEN` добавится автоматически
+4. Redeploy
+
+**Ограничение:** макс. 4.5 MB на файл (лимит Vercel). Для больших видео используйте ссылки (YouTube, Cloudinary).
+
+## 4. Вход в админку
 
 После успешного seed:
 
