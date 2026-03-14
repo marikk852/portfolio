@@ -1,8 +1,10 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { ArrowLeft } from 'lucide-react';
+import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowLeft, X } from 'lucide-react';
 
 function getYouTubeEmbedUrl(url: string): string | null {
   const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
@@ -35,6 +37,12 @@ interface PortfolioDetailContentProps {
   codeLabel?: string;
 }
 
+function getFullImageUrl(src: string): string {
+  if (src.startsWith('http')) return src;
+  if (src.startsWith('/')) return src;
+  return `/${src}`;
+}
+
 export function PortfolioDetailContent({
   project,
   portfolioPath,
@@ -43,7 +51,22 @@ export function PortfolioDetailContent({
   liveLabel = "Открыть сайт",
   codeLabel = "GitHub",
 }: PortfolioDetailContentProps) {
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const images = project.images?.filter(Boolean) ?? [];
+
+  useEffect(() => {
+    const onEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setLightboxIndex(null);
+    };
+    if (lightboxIndex !== null) {
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', onEscape);
+    }
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', onEscape);
+    };
+  }, [lightboxIndex]);
   const videoUrl = project.videoUrl ?? null;
   const youtubeEmbed = videoUrl ? getYouTubeEmbedUrl(videoUrl) : null;
   const vimeoEmbed = videoUrl ? getVimeoEmbedUrl(videoUrl) : null;
@@ -119,23 +142,66 @@ export function PortfolioDetailContent({
 
           {images.length > 0 && (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {images.map((src, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.05 }}
-                  className="rounded-xl overflow-hidden border border-white/10 bg-muted/20 aspect-video"
-                >
-                  <img
-                    src={src}
-                    alt={`${project.title} — скриншот ${idx + 1}`}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </motion.div>
-              ))}
+              {images.map((src, idx) => {
+                const fullUrl = getFullImageUrl(src);
+                return (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.05 }}
+                    className="relative rounded-xl overflow-hidden border border-white/10 bg-muted/20 aspect-video cursor-zoom-in group"
+                    onClick={() => setLightboxIndex(idx)}
+                  >
+                    <Image
+                      src={fullUrl}
+                      alt={`${project.title} — скриншот ${idx + 1}`}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      quality={90}
+                    />
+                  </motion.div>
+                );
+              })}
             </div>
           )}
+
+          <AnimatePresence>
+            {lightboxIndex !== null && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+                onClick={() => setLightboxIndex(null)}
+              >
+                <button
+                  onClick={() => setLightboxIndex(null)}
+                  className="absolute right-4 top-4 z-10 rounded-full p-2 text-white/80 hover:bg-white/10 hover:text-white transition-colors"
+                  aria-label="Закрыть"
+                >
+                  <X className="h-8 w-8" />
+                </button>
+                <motion.div
+                  initial={{ scale: 0.95 }}
+                  animate={{ scale: 1 }}
+                  exit={{ scale: 0.95 }}
+                  className="relative h-[85vh] w-[85vw] max-h-[90vh] max-w-[90vw] shrink-0"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <Image
+                    src={getFullImageUrl(images[lightboxIndex])}
+                    alt={`${project.title} — скриншот ${lightboxIndex + 1}`}
+                    fill
+                    className="object-contain rounded-lg"
+                    quality={95}
+                    sizes="90vw"
+                  />
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       )}
 

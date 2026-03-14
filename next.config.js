@@ -11,10 +11,8 @@ const nextConfig = {
   },
   images: {
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**',
-      },
+      { protocol: 'https', hostname: '**' },
+      { protocol: 'http', hostname: '**' },
     ],
   },
   transpilePackages: ['tailwind-merge', 'clsx', 'class-variance-authority'],
