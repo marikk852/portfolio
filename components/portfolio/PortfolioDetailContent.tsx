@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -180,36 +181,44 @@ export function PortfolioDetailContent({
           )}
 
           <AnimatePresence>
-            {lightboxIndex !== null && (
-              <div
-                className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 touch-none overscroll-none"
-                onClick={() => setLightboxIndex(null)}
-              >
-                <button
-                  onClick={() => setLightboxIndex(null)}
-                  className="absolute right-4 top-4 z-10 rounded-full p-2 text-white/80 hover:bg-white/10 hover:text-white transition-colors"
-                  aria-label="Закрыть"
-                >
-                  <X className="h-8 w-8" />
-                </button>
+            {lightboxIndex !== null &&
+              typeof document !== 'undefined' &&
+              createPortal(
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  className="relative w-[85vw] h-[85vh] max-w-[90vw] max-h-[90vh] shrink-0"
-                  onClick={(e) => e.stopPropagation()}
+                  key="image-popup"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90"
+                  style={{ overflow: 'hidden', touchAction: 'none' }}
+                  onClick={() => setLightboxIndex(null)}
                 >
-                  <Image
-                    src={getFullImageUrl(images[lightboxIndex])}
-                    alt={`${project.title} — скриншот ${lightboxIndex + 1}`}
-                    fill
-                    className="object-contain rounded-lg"
-                    quality={95}
-                    sizes="90vw"
-                  />
-                </motion.div>
-              </div>
-            )}
+                  <button
+                    onClick={() => setLightboxIndex(null)}
+                    className="absolute right-4 top-4 z-10 rounded-full p-2 text-white/80 hover:bg-white/10 hover:text-white transition-colors"
+                    aria-label="Закрыть"
+                  >
+                    <X className="h-8 w-8" />
+                  </button>
+                  <motion.div
+                    initial={{ scale: 0.95 }}
+                    animate={{ scale: 1 }}
+                    exit={{ scale: 0.95 }}
+                    className="relative w-[80vw] h-[80vh] shrink-0 overflow-hidden rounded-lg bg-black/50"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <Image
+                      src={getFullImageUrl(images[lightboxIndex])}
+                      alt={`${project.title} — скриншот ${lightboxIndex + 1}`}
+                      fill
+                      className="object-contain"
+                      quality={95}
+                      sizes="80vw"
+                    />
+                  </motion.div>
+                </motion.div>,
+                document.body
+              )}
           </AnimatePresence>
         </div>
       )}
